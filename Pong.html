@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<title>Pong</title>
+<head>
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body onload="stopBall()">
+<button style="color:green; font-weight:600; position:absolute; background-color:blue; border-radius:10%; border:none;" onclick='startBall()'>Start</button>
+<button style="color:green; font-weight:600; right:0px; position:absolute; background-color:blue; border-radius:10%; border:none;" onclick='stopBall()'>Stop</button>
+<h1 style="left: 45%; top: 10px; position:absolute;">Pong</h1>
+<h1 style="left:0px; position:absolute;"><span id="score1"></span></h1>
+<h1 style="right:0px; position:absolute;"><span id="score2"></span></h1>
+<div id='paddle1' style="position:absolute; left:0px; top:460px; width:10px; height:260px; background-color:red;">
+</div>
+<div id='paddle2' style="position:absolute; right:0px; top:460px; width:10px; height:260px; background-color:green;">
+</div>
+<div id='ball' style="position:absolute; left:820px; top:520px;
+width:30px; height:30px; border-radius:50%; background-color:black;">
+</div>
+<script type="text/javascript">
+var paddleHeight= 260;
+var paddleWidth = 10;
+var ballRadius = 30;
+var halfPaddleHeight = paddleHeight/2;
+var speedOfPaddle1 = 0;
+var positionOfPaddle1 = 460;
+var speedOfPaddle2 = 0;
+var positionOfPaddle2 = 460;
+var topPositonOfBall = 520;
+var leftPositionOfBall = 820;
+var topSpeedOfBall = 0;
+var leftSpeedOfBall = 0;
+var score1 = "let's do this";
+var score2 = "let's do this";
+//change the score to get him next time and good job
+function stopBall(){
+  topPositonOfBall=510;
+  leftPositionOfBall=820;
+  leftSpeedOfBall=0;
+  topSpeedOfBall=0;
+}
+function startBall(){
+  topPositonOfBall = 510;
+  leftPositionOfBall = 820;
+  if (Math.random() < 0.5) {
+    var side = 1
+  } else {
+    var side = -1
+  }
+  topSpeedOfBall = Math.random()*-2*-3;
+  leftSpeedOfBall = side*(Math.random()*2*6);
+  };
+document.addEventListener('keydown', function (e) {
+  if (e.keycode==87 || e.which == 87) {// W key
+  positionOfPaddle1-=10;
+document.getElementById('paddle1').style.top =
+(positionOfPaddle1)+"px";}
+  if (e.keycode==83 || e.which == 83) {// S key
+  positionOfPaddle1+=10;
+document.getElementById('paddle1').style.top =
+(positionOfPaddle1)+"px";}
+  if (e.keycode==38 || e.which == 38) {// up arrow key
+  positionOfPaddle2-=10;
+document.getElementById('paddle2').style.top =
+(positionOfPaddle2)+"px";}
+  if (e.keycode==40 || e.which == 40) {// down arrow key
+  positionOfPaddle2+=10;
+document.getElementById('paddle2').style.top =
+(positionOfPaddle2)+"px";}
+}, false);
+
+document.addEventListener('keydown', function (e) {
+ if (e.keyCode == 87 || e.which == 87) { // W key
+ speedOfPaddle1 = -10;
+ }
+ if (e.keyCode == 83 || e.which == 83) { // S Key
+ speedOfPaddle1 = 10;
+ }
+ if (e.keyCode == 38 || e.which == 38) { // up arrow
+ speedOfPaddle2 = -10;
+ }
+ if (e.keyCode == 40 || e.which == 40) { // down arrow
+ speedOfPaddle2 = 10;
+ }
+}, false);
+window.setInterval(function show() {
+ positionOfPaddle1 += speedOfPaddle1;
+ positionOfPaddle2 += speedOfPaddle2;
+ topPositonOfBall += topSpeedOfBall;
+ leftPositionOfBall += leftSpeedOfBall;
+
+ document.getElementById('ball').style.top= (topPositonOfBall)+ 'px';
+ document.getElementById('ball').style.left= (leftPositionOfBall)+ 'px';
+ if (positionOfPaddle1 <= 150) {
+   positionOfPaddle1 = 150;
+ }
+ if (positionOfPaddle2<= 150) {
+   positionOfPaddle2 = 150;
+ }
+ if (positionOfPaddle1 >=window.innerHeight-paddleHeight) {
+   positionOfPaddle1 = window.innerHeight-paddleHeight;
+ }
+ if (positionOfPaddle2 >=window.innerHeight-paddleHeight) {
+   positionOfPaddle2 = window.innerHeight-paddleHeight;
+ }
+ if (topPositonOfBall <=150 || topPositonOfBall >= window.innerHeight - ballRadius) {
+   topSpeedOfBall = -topSpeedOfBall;
+ }
+ if (leftPositionOfBall<paddleWidth){
+   if (topPositonOfBall>positionOfPaddle1 && topPositonOfBall<positionOfPaddle1+paddleHeight){
+     leftSpeedOfBall= -leftSpeedOfBall;} else {
+       score2 = "Well Done!"
+       score1 = "Get Em Next Time!"
+       startBall();
+  }
+}
+  if (leftPositionOfBall>= window.innerWidth - ballRadius - paddleWidth){
+    if (topPositonOfBall>positionOfPaddle2 && topPositonOfBall<positionOfPaddle2+paddleHeight){
+      leftSpeedOfBall= -leftSpeedOfBall;} else {
+        score1 = "Well Done!"
+        score2 = "Get Em Next Time!"
+        startBall();
+   }
+ }
+ document.getElementById('paddle1').style.top =
+                               (positionOfPaddle1) + 'px';
+ document.getElementById('paddle2').style.top =
+                               (positionOfPaddle2) + 'px';
+ document.getElementById('score1').innerHTML = score1.toString();
+ document.getElementById('score2').innerHTML = score2.toString();
+}, 1000/60);
+function print(){
+  console.log(leftPositionOfBall);
+}
+document.addEventListener('keyup',function (e) {
+  if (e.keyCode == 87 || e.which == 87) { // W key
+  speedOfPaddle1 = 0;
+  }
+  if (e.keyCode == 83 || e.which == 83) { // S Key
+  speedOfPaddle1 = 0;
+  }
+  if (e.keyCode == 38 || e.which == 38) { // up arrow
+  speedOfPaddle2 = 0;
+  }
+  if (e.keyCode == 40 || e.which == 40) { // down arrow
+  speedOfPaddle2 = 0;
+  }
+}, false);
+
+
+
+</script>
+</body>
+</html>
